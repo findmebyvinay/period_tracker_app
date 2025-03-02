@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -12,15 +13,17 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
    appBar: AppBar(
-    title:const Text('Welcome Back!',
-    style: TextStyle(
-      fontSize: 16
-    ),),
+    centerTitle: true,
+    backgroundColor: Colors.grey[100],
+    title:Text('Period Tracker',
+    style:GoogleFonts.poppins(fontWeight:FontWeight.bold )),
    ),
-   body: Column(
-    children: [
-      Text('heloo')
-    ],
+   body: Center(
+     child: Column(
+      children: [
+        Text('heloo')
+      ],
+     ),
    ),
     );
   }

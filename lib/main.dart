@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:period_tracker_app/splash/splash_screen.dart';
 
 void main() {
@@ -31,8 +32,9 @@ class MyApp extends StatelessWidget {
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
         primarySwatch:Colors.pink,
-       // scaffoldBackgroundColor: Colors.pink,
+        scaffoldBackgroundColor: Colors.grey[100],
       //  colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      textTheme: GoogleFonts.poppinsTextTheme(),
         useMaterial3: true,
       ),
       home: const SplashScreen()

@@ -25,10 +25,42 @@ class _UserInputScreenState extends State<UserInputScreen> {
  double weight=55.5;
  double height=5.1;
  List<String> _healthIssue=[];
+ 
+void _submitData() {
+    if (_formKey.currentState?.validate()??false) {
+      final userData = UserData(
+        lastPeriodStart: _lastPeriod!,
+        cycleLength: _cycleLength,
+        periodDuration: _periodDuration,
+        weight: weight,
+        height: height,
+        healthIssue: _healthIssue,
+      );
+      print('success');
+      print(userData.lastPeriodStart);
+      print(userData.cycleLength);
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('Submitted successfully') ));
+      context.read<PeriodBloc>().add(SubmitUserData(userData));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
+    }
+    else if (_formKey.currentState?.validate()==null&& _lastPeriod==null){
+      showDialog(
+        context: context,
+         builder: (BuildContext context){
+          return AlertDialog(
+            title: Text('Error Box',style: GoogleFonts.poppins(color: Colors.pink,fontWeight: FontWeight.bold),),
+            content: Text('Please provide required data',style: GoogleFonts.poppins(color: Colors.pinkAccent,fontWeight: FontWeight.w400),),
+          );
+         });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.pink[100],
       appBar: AppBar(
+        backgroundColor: Colors.pink[100],
         title: Text('Period Pal',
         style: GoogleFonts.poppins(fontWeight: FontWeight.bold,
         color: Colors.pinkAccent),
@@ -36,51 +68,67 @@ class _UserInputScreenState extends State<UserInputScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(child: ListView(
-          children: [
-            _buildDatePicker(),
-            _buildTextField('CycleLength(days)', (val)=>_cycleLength=int.parse(val)),
-            _buildTextField('PeriodDuration(days)', (val)=>_periodDuration=int.parse(val)),
-            _buildTextField('Height', (val)=> height=double.parse(val)),
-            _buildTextField('Weight', (val)=> weight=double.parse(val)),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.purple[300]
-              ),
-              onPressed:_submitData ,
-               child: Text('Calculate',style: GoogleFonts.poppins(color: Colors.white),
-               ))
-          ],
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Center(
+          child: ListView(
+            children: [
+              _buildDatePicker(),
+              const SizedBox(height: 24,),
+              _buildTextField('CycleLength(days)', (val)=>_cycleLength=int.parse(val)),
+              const SizedBox(height: 24,),
+              _buildTextField('PeriodDuration(days)', (val)=>_periodDuration=int.parse(val)),
+              const SizedBox(height: 24,),
+              _buildTextField('Height', (val)=> height=double.parse(val)),
+              const SizedBox(height: 24,),
+              _buildTextField('Weight', (val)=> weight=double.parse(val)),
+              const SizedBox(height: 24,),
+              _buildHealthIssueChip(),
+              const SizedBox(height: 24,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[300]
+                ),
+                onPressed:_submitData,
+                 child: Text('Calculate',style: GoogleFonts.poppins(color: Colors.white),
+                 ))
+            ],
+          ),
         )),),
     );
   }
 
   
 Widget _buildDatePicker(){
-  return ListTile(
-    title: Text(_lastPeriod==null?'Select last Period Date':'LastPeriod: ${_lastPeriod!.toString().substring(0,10)}'),
-    trailing: const Icon(Icons.calendar_today,color: Colors.white,),
-    onTap: () async{
-      final picked = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime.now(),
-        );
-        if(picked!=null){
-          setState(() {
-            _lastPeriod=picked;
-          });
-        }
-    },
+  return Container(
+    color: Colors.white,
+    child: ListTile(
+      
+      title: Text(_lastPeriod==null?'Select last Period Date':'LastPeriod: ${_lastPeriod!.toString().substring(0,10)}'),
+      trailing: const Icon(Icons.calendar_today,color: Colors.pinkAccent,),
+      onTap: () async{
+        final picked = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime.now(),
+          );
+          if(picked!=null){
+            setState(() {
+              _lastPeriod=picked;
+            });
+          }
+      },
+    ),
   );
 }
 Widget _buildTextField(String label,Function(String) onSaved){
   return Padding(padding: EdgeInsets.symmetric(vertical: 8.0),
   child: TextFormField(
     decoration: InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
       labelText: label,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -108,18 +156,4 @@ Widget _buildHealthIssueChip(){
   );
 }
 
-void _submitData() {
-    if (_formKey.currentState!.validate() && _lastPeriod != null) {
-      final userData = UserData(
-        lastPeriodStart: _lastPeriod!,
-        cycleLength: _cycleLength,
-        periodDuration: _periodDuration,
-        weight: weight,
-        height: height,
-        healthIssue: _healthIssue,
-      );
-      context.read<PeriodBloc>().add(SubmitUserData(userData));
-      Navigator.push(context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
-    }
-  }
 }

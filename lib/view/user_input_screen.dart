@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:period_tracker_app/bloc/period_event.dart';
 import 'package:period_tracker_app/view/dashboard_screen.dart';
+
 
 import '../bloc/period_bloc.dart';
 import '../model/user_data.dart';
@@ -74,6 +76,16 @@ void _submitData() {
           child: Center(
           child: ListView(
             children: [
+              SizedBox(
+                height: 200,
+                child: Lottie.asset('assets/images/rabbit.json'),
+              ),
+              const SizedBox(height: 24,),
+             Center(
+               child: Text('Please Provide the required data !',
+               style:GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.pinkAccent),),
+             ),
+              const SizedBox(height: 24,),
               _buildDatePicker(),
               const SizedBox(height: 24,),
               _buildTextField('CycleLength(days)', (val)=>_cycleLength=int.parse(val)),
@@ -102,13 +114,18 @@ void _submitData() {
   
 Widget _buildDatePicker(){
   return Container(
-    color: Colors.white,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      color: Colors.white,
+    ),
+    
     child: ListTile(
       
       title: Text(_lastPeriod==null?'Select last Period Date':'LastPeriod: ${_lastPeriod!.toString().substring(0,10)}'),
       trailing: const Icon(Icons.calendar_today,color: Colors.pinkAccent,),
       onTap: () async{
         final picked = await showDatePicker(
+          barrierColor: Colors.pink[100],
           context: context,
           initialDate: DateTime.now(),
           firstDate: DateTime(2020),
@@ -127,6 +144,7 @@ Widget _buildTextField(String label,Function(String) onSaved){
   return Padding(padding: EdgeInsets.symmetric(vertical: 8.0),
   child: TextFormField(
     decoration: InputDecoration(
+    
       filled: true,
       fillColor: Colors.white,
       labelText: label,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:period_tracker_app/bloc/period_bloc.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../bloc/period_state.dart';
 
@@ -26,17 +27,43 @@ class DashboardScreen extends StatelessWidget {
           final prediction=state.cycle;
           final userData= state.data;
           return Padding(padding:const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildCard('Next Period', DateFormat.yMMMd().format(prediction.nextPeriodStart)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            
+                TableCalendar(
+                  
+                  firstDay: DateTime.utc(2020,1,1),
+                  lastDay: DateTime.utc(2030,12,31),
+                  focusedDay: DateTime.now(),
+                  calendarFormat: CalendarFormat.month,
+                  selectedDayPredicate: (day)=> isSameDay(state.cycle.nextPeriodStart, day),
+                  rangeStartDay: state.cycle.fertileStart,
+                  rangeEndDay: state.cycle.fertileEnd,
+                  calendarStyle: CalendarStyle(
+                  //  cellMargin: EdgeInsets.all(16),
+                    rangeStartDecoration:const BoxDecoration(
+                      color: Colors.purpleAccent
+                    ),
+                    rangeEndDecoration:const BoxDecoration(
+                      color: Colors.purpleAccent
+                    ),
+                    rangeHighlightColor: Colors.pink[300]!,
+                        todayDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.5), shape: BoxShape.circle),
+                        selectedDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, shape: BoxShape.circle),
+                      ),
+                ),
+                  const SizedBox(height: 24,),
+                _buildCard('Next Period', DateFormat.yMMMd().format(prediction.nextPeriodStart)),
+                const SizedBox(height: 12,),
+                _buildCard('Ovulation Day', DateFormat.yMMMd().format(prediction.ovulationDays)),
               const SizedBox(height: 12,),
-              _buildCard('Ovulation Day', DateFormat.yMMMd().format(prediction.ovulationDays)),
-            const SizedBox(height: 12,),
-            _buildCard('Fertile Window', '${DateFormat.yMMMd().format(prediction.fertileEnd)}'),
-            const SizedBox(height: 12,),
-            if(userData.healthIssue.isNotEmpty)Text('Consult doctor for ${state.data.healthIssue.join(", ")}')
-            ],
+              _buildCard('Fertile Window', '${DateFormat.yMMMd().format(prediction.fertileStart)}'+' to '+'${DateFormat.yMMMd().format(prediction.fertileEnd)}'),
+              const SizedBox(height: 12,),
+              // if(userData.healthIssue.isNotEmpty)Text('Consult doctor for ${state.data.healthIssue.join(", ")}')
+              ],
+            ),
           ),);
         }
         if(state is PeriodError){

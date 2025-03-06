@@ -43,15 +43,16 @@ class DashboardScreen extends StatelessWidget {
                   rangeEndDay: state.cycle.fertileEnd,
                   calendarStyle: CalendarStyle(
                   //  cellMargin: EdgeInsets.all(16),
-                    rangeStartDecoration:const BoxDecoration(
-                      color: Colors.purpleAccent
+                  
+                    rangeStartDecoration:BoxDecoration(
+                      color: Colors.pink
                     ),
-                    rangeEndDecoration:const BoxDecoration(
-                      color: Colors.purpleAccent
+                    rangeEndDecoration: BoxDecoration(
+                      color: Colors.pink
                     ),
                     rangeHighlightColor: Colors.pink[300]!,
                         todayDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary.withOpacity(0.5), shape: BoxShape.circle),
-                        selectedDecoration: BoxDecoration(color: Theme.of(context).colorScheme.primary, shape: BoxShape.circle),
+                        selectedDecoration: BoxDecoration(color: Colors.redAccent, shape: BoxShape.circle),
                       ),
                 ),
                   const SizedBox(height: 24,),

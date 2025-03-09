@@ -3,9 +3,9 @@ class UserData{
   final DateTime lastPeriodStart;
   final int cycleLength;
   final int periodDuration;
-  final double weight;
-  final double height;
-  final List<String> healthIssue;
+  final double?weight;
+  final double?height;
+  final List<String>? healthIssue;
 
   UserData({
     required this.lastPeriodStart,
@@ -17,6 +17,10 @@ class UserData{
   }
 
   );
+
+  get toJson => null;
+
+  static fromJson(data) {}
 
   
 }

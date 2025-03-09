@@ -3,9 +3,11 @@ import 'package:period_tracker_app/bloc/period_event.dart';
 import 'package:period_tracker_app/bloc/period_state.dart';
 import 'package:period_tracker_app/model/cycle_prediction.dart';
 import 'package:period_tracker_app/model/user_data.dart';
+import 'package:period_tracker_app/services/storage_service.dart';
 
 class PeriodBloc  extends Bloc<PeriodEvent,PeriodState>{
-  PeriodBloc():super(PeriodInitial()){
+  final StorageService _storageService;
+  PeriodBloc(this._storageService):super(PeriodInitial()){
    
    on<SubmitUserData> (_onSubmitUserData);
 
@@ -14,7 +16,9 @@ class PeriodBloc  extends Bloc<PeriodEvent,PeriodState>{
    emit(PeriodLoading());
    try{
         final userData= event.data;
+      //  final data = await _storageService.getCycleData();
         final prediction=_calculateCycle(userData);
+        
         emit(PeriodLoaded(userData, prediction));
 
    }

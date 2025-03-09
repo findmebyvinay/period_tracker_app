@@ -46,7 +46,7 @@ void _submitData() {
       context.read<PeriodBloc>().add(SubmitUserData(userData));
       Navigator.push(context, MaterialPageRoute(builder: (_) => const DashboardScreen()));
     }
-    else if (_formKey.currentState?.validate()==null&& _lastPeriod==null){
+    else if (_formKey.currentState?.validate()==true){
       showDialog(
         context: context,
          builder: (BuildContext context){
@@ -153,6 +153,14 @@ Widget _buildTextField(String label,Function(String) onSaved){
       ),
     ),
     keyboardType: TextInputType.number,
+    validator:(value){
+      if(value!.isEmpty){
+        return 'Please enter the required data';
+      }
+      else{
+        return null;
+      }
+    },
     onChanged: (val)=>onSaved(val),
   ),);
 }

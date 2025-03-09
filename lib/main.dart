@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:period_tracker_app/bloc/period_bloc.dart';
+import 'package:period_tracker_app/services/storage_service.dart';
 import 'package:period_tracker_app/splash/splash_screen.dart';
 
-void main() {
+void main()async {
+  await Hive.initFlutter();
+  await Hive.openBox('cycleBox');
   runApp(const MyApp());
 }
 
@@ -15,7 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PeriodBloc(),
+      create: (context) => PeriodBloc(
+        StorageService()
+      ),
       child: MaterialApp(
           title: 'Flutter Demo',
           debugShowCheckedModeBanner: false,

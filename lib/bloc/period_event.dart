@@ -12,3 +12,10 @@ class SubmitUserData extends PeriodEvent{
 
   List<Object> get props=>[data];
 }
+
+class SavedUserData extends PeriodEvent{
+  final UserData userData;
+  SavedUserData(this.userData);
+
+  List<Object> get props=>[userData];
+}

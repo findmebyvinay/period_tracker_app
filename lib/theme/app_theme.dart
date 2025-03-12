@@ -12,7 +12,7 @@ class AppTheme {
   
   static ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,
-    scaffoldBackgroundColor: backgroundColor,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 248, 212, 224),
     fontFamily: 'Poppins',
     textTheme: const TextTheme(
       displayLarge: TextStyle(

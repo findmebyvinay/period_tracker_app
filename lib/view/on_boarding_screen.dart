@@ -11,7 +11,11 @@ import 'package:period_tracker_app/model/user_profile.dart';
 import 'package:period_tracker_app/theme/app_theme.dart';
 import 'package:period_tracker_app/view/main_screen.dart';
 
+import '../bloc/periodTracker/period_tracker_bloc.dart';
+import '../bloc/periodTracker/period_tracker_event.dart';
+import '../bloc/periodTracker/period_tracker_state.dart';
 import '../custom_widget/circular_stepper.dart';
+import '../custom_widget/gradient_card.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -47,7 +51,7 @@ void _nextPage(){
       curve: Curves.easeInOut);
   }
   else{
-    SubmitUserData();
+    submitUserData();
   }}
   void _previousPage(){
     if(_currentPage>0){
@@ -57,7 +61,7 @@ void _nextPage(){
 
     }
   }
-  void SubmitUserData(){
+  void submitUserData(){
     final userAge= DateTime.now().millisecondsSinceEpoch.toInt();
 
     final userProfile= UserProfile(
@@ -105,7 +109,7 @@ void _nextPage(){
                     _buildHealthConcernPage()
               ],
             )),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 24,vertical: 32),
+            Padding(padding:const EdgeInsets.symmetric(horizontal: 24,vertical: 32),
             child: GradientButton(text: _currentPage==_totalPage-1?'Finish':'Next',
              onPressed: _nextPage),)
             
@@ -130,13 +134,19 @@ Widget _buildBasicInfo(){
         color: AppTheme.lightTextColor
       ),),
       const SizedBox(height: 32,),
-      TextField(
+      TextFormField(
         controller: _nameController,
         decoration:const InputDecoration(
           labelText: 'Full name',
           hintText: 'enter your name'
         
         ),
+        validator: (value){
+          if(value!.isEmpty){
+            return 'Please enter your name';
+          }
+          else return null;
+        },
       ),
       const SizedBox(height: 24,),
 
@@ -292,7 +302,7 @@ return Column(
 }
 
 Widget _buildHealthConcernPage(){
-  return Padding(padding: EdgeInsets.all(24),
+  return Padding(padding:const EdgeInsets.all(24),
   child: Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -309,5 +319,7 @@ Widget _buildHealthConcernPage(){
     ],
   ),);
 }
+
 }
+
 

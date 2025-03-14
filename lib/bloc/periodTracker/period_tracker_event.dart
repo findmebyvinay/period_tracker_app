@@ -20,8 +20,8 @@ class AddPeriodData extends PeriodTrackerEvent{
     required this.startDate,
     required this.periodDuration,
     required this.cycleDuration,
-    required this.symptom,
-    required this.healthMetrics
+    this.symptom=const [],
+    this.healthMetrics=const{}
   });
 
   List<Object> get props=>[startDate,periodDuration,cycleDuration,symptom,healthMetrics];
